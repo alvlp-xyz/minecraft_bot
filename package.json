@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "mineflayer": "^4.20.1"
+  },
+  "name": "minecraft_bot",
+  "version": "0.0.0",
+  "description": "Using Mineflayer",
+  "main": "bot.js",
+  "scripts": {
+    "test": "node bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvlp-xyz/minecraft_bot.git"
+  },
+  "keywords": [
+    "minecraft-bot"
+  ],
+  "author": "alvlp",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alvlp-xyz/minecraft_bot/issues"
+  },
+  "homepage": "https://github.com/alvlp-xyz/minecraft_bot#readme"
+}
