@@ -74,7 +74,7 @@ function createBot() {
         console.log(`Redirecting chat to Telegram group: ${username}: ${message}`)
         telegram.telegram.sendMessage(grouptoken, username + ': ' + message)
     })
-    */
+    
 }
 
 createBot()
