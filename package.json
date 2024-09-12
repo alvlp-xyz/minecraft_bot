@@ -20,9 +20,9 @@
   "name": "minecraft_bot",
   "version": "0.0.0",
   "description": "Using Mineflayer",
-  "main": "bot.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node bot.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
