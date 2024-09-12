@@ -1,3 +1,4 @@
+require('dotenv').config();
 const {
 	default: connectServer,
 	useMultiFileAuthState,
@@ -30,10 +31,10 @@ const readline = require("readline");
 const mineflayer = require('mineflayer');
 const { Telegraf } = require('telegraf')
 const mineflayerViewer = require('prismarine-viewer').mineflayer
-
-const token = ""
 const useStore = true;
-const grouptoken = ""//https://api.telegram.org/bot<token>/getUpdates
+const token = process.env.TOKEN;
+const grouptoken = process.env.GROUP_ID; //https://api.telegram.org/bot<token>/getUpdates
+const username = process.env.USERNAME;
 const telegram = new Telegraf(token)
 const bot = mineflayer.createBot({
         host: "alvlp.aternos.me",
@@ -41,7 +42,7 @@ const bot = mineflayer.createBot({
         username: "nekonux_bot",
         //version: false
     })
-    
+
 console.log('Starting bot...')
 
     //Tele
