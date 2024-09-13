@@ -9,34 +9,54 @@ const username = process.env.USERNAME;
 
 const telegram = new Telegraf(token);
 
-let bot; // Declare bot outside to access in different scopes
+let bot;
 let initTimeout;
 
 function createBot() {
     console.log('Initializing...');
 
-    // Start the bot
     bot = mineflayer.createBot({
         host: "alvlp.aternos.me",
         port: "52346",
         username: "nekonux_bot",
     });
 
-    // Set a timeout to restart the bot if initialization takes more than 10 seconds
     initTimeout = setTimeout(() => {
-        console.log('Initialization took too long, restarting bot...');
-        bot.end(); // End the bot connection if it is still initializing
+        console.log('Time out, restarting bot...');
+        bot.end();
         createBot();
-    }, 20000); // 10 seconds
+    }, 20000);
 
-    // Redirect in-game messages to Telegram group
+    bot.on('spawn', function () {
+        clearTimeout(initTimeout);
+        console.log('[BOT] Bot spawned');
+        setInterval(() => {
+            const entity = bot.nearestEntity()
+            if (entity !== null) {
+              if (entity.type === 'player') {
+                bot.lookAt(entity.position.offset(0, 1.6, 0))
+                bot.attack(entity)
+              } else if (entity.type === 'mob') {
+                bot.lookAt(entity.position)
+                bot.attack(entity)
+              }
+            }
+          }, 50)
+
+
+        bot.chat('&a&lBot Connected');
+        bot.chat('&l&c[SERVER] &a&lBot Started!');
+        bot.setControlState('forward', true);
+        bot.setControlState('jump', true);
+        bot.setControlState('sprint', true);
+    });
+
     bot.on('chat', (username, message) => {
         if (username === bot.username) return;
         console.log(`[SERVER] ${username} ${message}`);
         telegram.telegram.sendMessage(grouptoken, username + ': ' + message);
     });
 
-    // Command handling
     bot.on('chat', (username, message) => {
         if (username === bot.username) return;
         console.log(`[SERVER] ${username} ${message}`);
@@ -53,18 +73,45 @@ function createBot() {
                 bot.chat('Server Bot Stopped!');
                 bot.clearControlStates();
                 break;
+            case ';sleep':
+                goToSleep()
+                break
+            case ';wakeup':
+                wakeUp()
+                break
         }
     });
 
-    bot.on('spawn', function () {
-        console.log('[BOT] Bot spawned');
-        clearTimeout(initTimeout); // Clear the timeout when the bot spawns successfully
-        bot.chat('&a&lBot Connected');
-        bot.chat('&l&c[SERVER] &a&lBot Started!');
-        bot.setControlState('forward', true);
-        bot.setControlState('jump', true);
-        bot.setControlState('sprint', true);
-    });
+    bot.on('sleep', () => {
+        bot.chat('Good night!')
+      })
+      bot.on('wake', () => {
+        bot.chat('Good morning!')
+      })
+
+    async function goToSleep () {
+    const bed = bot.findBlock({
+        matching: block => bot.isABed(block)
+    })
+    if (bed) {
+        try {
+        await bot.sleep(bed)
+        bot.chat("I'm sleeping")
+        } catch (err) {
+        bot.chat(`I can't sleep: ${err.message}`)
+        }
+    } else {
+        bot.chat('No nearby bed')
+    }
+    }
+
+    async function wakeUp () {
+    try {
+        await bot.wake()
+    } catch (err) {
+        bot.chat(`I can't wake up: ${err.message}`)
+    }
+    }
 
     bot.on('death', function () {
         console.log('Bot died, respawning');
