@@ -27,7 +27,7 @@ function createBot() {
         console.log('Initialization took too long, restarting bot...');
         bot.end(); // End the bot connection if it is still initializing
         createBot();
-    }, 10000); // 10 seconds
+    }, 20000); // 10 seconds
 
     // Redirect in-game messages to Telegram group
     bot.on('chat', (username, message) => {
