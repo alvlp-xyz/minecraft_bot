@@ -22,7 +22,8 @@
   "description": "Using Mineflayer",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "keepalive": "node keepalive.js"
   },
   "repository": {
     "type": "git",
